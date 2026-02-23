@@ -8,13 +8,32 @@ public
 #else
 internal
 #endif
-class ImageResultFloat
+sealed class ImageResultFloat
 {
-	public int Width { get; set; }
-	public int Height { get; set; }
-	public ColorComponents SourceComp { get; set; }
-	public ColorComponents Comp { get; set; }
-	public float[] Data { get; set; } = [];
+	/// <summary>
+	/// Gets the width of the image in pixels.
+	/// </summary>
+	public int Width { get; internal set; }
+
+	/// <summary>
+	/// Gets the height of the image in pixels.
+	/// </summary>
+	public int Height { get; internal set; }
+
+	/// <summary>
+	/// Gets the original color components of the source image.
+	/// </summary>
+	public ColorComponents SourceComp { get; internal set; }
+
+	/// <summary>
+	/// Gets the color components of the decoded image data.
+	/// </summary>
+	public ColorComponents Comp { get; internal set; }
+
+	/// <summary>
+	/// Gets the raw floating-point pixel data of the decoded HDR image.
+	/// </summary>
+	public float[] Data { get; internal set; } = [];
 
 	internal static unsafe ImageResultFloat FromResult(float* result, int width, int height, ColorComponents comp,
 		ColorComponents req_comp)
@@ -36,6 +55,12 @@ class ImageResultFloat
 		return image;
 	}
 
+	/// <summary>
+	/// Loads an HDR image from a stream as floating-point data.
+	/// </summary>
+	/// <param name="stream">The stream containing the HDR image data.</param>
+	/// <param name="requiredComponents">The desired color components for the output. Use <see cref="ColorComponents.Default"/> to preserve the source format.</param>
+	/// <returns>An <see cref="ImageResultFloat"/> containing the decoded HDR image data.</returns>
 	public static unsafe ImageResultFloat FromStream(Stream stream,
 		ColorComponents requiredComponents = ColorComponents.Default)
 	{
@@ -58,6 +83,12 @@ class ImageResultFloat
 		}
 	}
 
+	/// <summary>
+	/// Loads an HDR image from a byte array as floating-point data.
+	/// </summary>
+	/// <param name="data">The byte array containing the HDR image data.</param>
+	/// <param name="requiredComponents">The desired color components for the output. Use <see cref="ColorComponents.Default"/> to preserve the source format.</param>
+	/// <returns>An <see cref="ImageResultFloat"/> containing the decoded HDR image data.</returns>
 	public static ImageResultFloat FromMemory(byte[] data,
 		ColorComponents requiredComponents = ColorComponents.Default)
 	{

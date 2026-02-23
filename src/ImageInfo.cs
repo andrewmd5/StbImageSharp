@@ -7,13 +7,33 @@ public
 #else
 internal
 #endif
-struct ImageInfo
+readonly struct ImageInfo
 {
-	public int Width;
-	public int Height;
-	public ColorComponents ColorComponents;
-	public int BitsPerChannel;
+	/// <summary>
+	/// Gets the width of the image in pixels.
+	/// </summary>
+	public int Width { get; init; }
 
+	/// <summary>
+	/// Gets the height of the image in pixels.
+	/// </summary>
+	public int Height { get; init; }
+
+	/// <summary>
+	/// Gets the color components of the image.
+	/// </summary>
+	public ColorComponents ColorComponents { get; init; }
+
+	/// <summary>
+	/// Gets the number of bits per channel (8 or 16).
+	/// </summary>
+	public int BitsPerChannel { get; init; }
+
+	/// <summary>
+	/// Reads image metadata from a stream without decoding the full image.
+	/// </summary>
+	/// <param name="stream">The stream containing the image data.</param>
+	/// <returns>An <see cref="ImageInfo"/> if the image format is recognized; otherwise, <see langword="null"/>.</returns>
 	public static unsafe ImageInfo? FromStream(Stream stream)
 	{
 		int width, height, comp;

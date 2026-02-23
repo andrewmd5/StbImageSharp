@@ -5,7 +5,7 @@ using System.IO;
 
 namespace StbImageSharp;
 
-internal class AnimatedGifEnumerator : IEnumerator<AnimatedFrameResult>
+internal sealed class AnimatedGifEnumerator : IEnumerator<AnimatedFrameResult>
 {
 	private readonly StbImage.stbi__context _context;
 	private readonly ColorComponents _colorComponents;
@@ -34,7 +34,7 @@ internal class AnimatedGifEnumerator : IEnumerator<AnimatedFrameResult>
 
 	public void Dispose()
 	{
-		Dispose(true);
+		DisposeCore();
 		GC.SuppressFinalize(this);
 	}
 
@@ -47,7 +47,7 @@ internal class AnimatedGifEnumerator : IEnumerator<AnimatedFrameResult>
 		var result = StbImage.stbi__gif_load_next(_context, gif, &ccomp, (int)ColorComponents, &two_back);
 		if (result == null) return false;
 
-		if (_current == null)
+		if (_current is null)
 		{
 			var comp = ColorComponents == ColorComponents.Default
 				? (ColorComponents)ccomp
@@ -74,12 +74,12 @@ internal class AnimatedGifEnumerator : IEnumerator<AnimatedFrameResult>
 
 	~AnimatedGifEnumerator()
 	{
-		Dispose(false);
+		DisposeCore();
 	}
 
-	protected unsafe virtual void Dispose(bool disposing)
+	private unsafe void DisposeCore()
 	{
-		if (_gif == null)
+		if (_gif is null)
 			return;
 
 		if (_gif._out_ != null)
@@ -104,7 +104,7 @@ internal class AnimatedGifEnumerator : IEnumerator<AnimatedFrameResult>
 	}
 }
 
-internal class AnimatedGifEnumerable(Stream input, ColorComponents colorComponents) : IEnumerable<AnimatedFrameResult>
+internal sealed class AnimatedGifEnumerable(Stream input, ColorComponents colorComponents) : IEnumerable<AnimatedFrameResult>
 {
 	public ColorComponents ColorComponents => colorComponents;
 
