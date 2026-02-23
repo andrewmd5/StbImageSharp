@@ -5,7 +5,10 @@ public
 #else
 internal
 #endif
-class AnimatedFrameResult : ImageResult
+sealed class AnimatedFrameResult : ImageResult
 {
-	public int DelayInMs { get; set; }
+	/// <summary>
+	/// Gets the delay for this frame in milliseconds.
+	/// </summary>
+	public int DelayInMs { get; internal set; }
 }

@@ -3,6 +3,6 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <IsAotCompatible>true</IsAotCompatible>
-        <NoWarn>CS8618;CA2014</NoWarn>
+        <NoWarn>CA2014</NoWarn>
     </PropertyGroup>
 </Project>

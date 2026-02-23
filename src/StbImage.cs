@@ -10,12 +10,15 @@ internal
 #endif
 static unsafe partial class StbImage
 {
-	public static string? stbi__g_failure_reason;
-	public static readonly char[] stbi__parse_png_file_invalid_chunk = new char[25];
+	[ThreadStatic]
+	internal static string? stbi__g_failure_reason;
 
+	/// <summary>
+	/// Gets the current number of outstanding native memory allocations.
+	/// </summary>
 	public static int NativeAllocations => MemoryStats.Allocations;
 
-	public class stbi__context
+	internal class stbi__context
 	{
 		private readonly Stream _stream;
 
@@ -34,13 +37,13 @@ static unsafe partial class StbImage
 		public Stream Stream => _stream;
 	}
 
-	private static int stbi__err(string str)
+	internal static int stbi__err(string str)
 	{
 		stbi__g_failure_reason = str;
 		return 0;
 	}
 
-	public static byte stbi__get8(stbi__context s)
+	internal static byte stbi__get8(stbi__context s)
 	{
 		var b = s.Stream.ReadByte();
 		if (b == -1) return 0;
@@ -48,24 +51,24 @@ static unsafe partial class StbImage
 		return (byte)b;
 	}
 
-	public static void stbi__skip(stbi__context s, int skip)
+	internal static void stbi__skip(stbi__context s, int skip)
 	{
 		s.Stream.Seek(skip, SeekOrigin.Current);
 	}
 
-	public static void stbi__rewind(stbi__context s)
+	internal static void stbi__rewind(stbi__context s)
 	{
 		s.Stream.Seek(0, SeekOrigin.Begin);
 	}
 
-	public static int stbi__at_eof(stbi__context s)
+	internal static int stbi__at_eof(stbi__context s)
 	{
 		return s.Stream.Position == s.Stream.Length ? 1 : 0;
 	}
 
-	public static int stbi__getn(stbi__context s, byte* buf, int size)
+	internal static int stbi__getn(stbi__context s, byte* buf, int size)
 	{
-		if (s._tempBuffer == null ||
+		if (s._tempBuffer is null ||
 			s._tempBuffer.Length < size)
 			s._tempBuffer = new byte[size * 2];
 

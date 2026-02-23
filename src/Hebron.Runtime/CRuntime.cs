@@ -69,32 +69,25 @@ internal static unsafe class CRuntime
 
 	public static int strcmp(sbyte* src, string token)
 	{
-		var result = 0;
-
 		for (var i = 0; i < token.Length; ++i)
 		{
 			if (src[i] != token[i])
-			{
-				++result;
-			}
+				return src[i] - token[i];
 		}
 
-		return result;
+		return src[token.Length];
 	}
 
 	public static int strncmp(sbyte* src, string token, ulong size)
 	{
-		var result = 0;
-
-		for (var i = 0; i < Math.Min(token.Length, (int)size); ++i)
+		var len = (int)Math.Min((ulong)token.Length, size);
+		for (var i = 0; i < len; ++i)
 		{
 			if (src[i] != token[i])
-			{
-				++result;
-			}
+				return src[i] - token[i];
 		}
 
-		return result;
+		return 0;
 	}
 
 	public static long strtol(sbyte* start, sbyte** end, int radix)

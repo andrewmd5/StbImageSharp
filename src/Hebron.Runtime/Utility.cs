@@ -1,6 +1,6 @@
 namespace Hebron.Runtime;
 
-internal class Utility
+internal static class Utility
 {
 	public static T[][] CreateArray<T>(int d1, int d2)
 	{
