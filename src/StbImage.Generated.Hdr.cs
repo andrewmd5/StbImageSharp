@@ -87,7 +87,7 @@ namespace StbImageSharp
 			{
 				for (; j < height; ++j)
 				{
-					for (; i < width; ++i)
+					for (i = 0; i < width; ++i)
 					{
 						//var rgbe = stackalloc byte[4];
 						stbi__getn(s, rgbe, 4);
